@@ -2,6 +2,8 @@
 
 Important dependencies
 
+1 - to download the pdf for courses you need to change the host name of the server
+
 
 
 for windowa
