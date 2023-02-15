@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    </head>
+    <body>
+
+
+    <h1>{{context.section}}</h1>   
+    <br>
+    <p>
+         <b>Date:</b> {{context.createdAt}}
+        <a id='link_pdf' href='pdf/{{context.section}}'>create pdf</a>
+    </p>
+   
+    <hr>
+    <br>
+    <p>
+        <h4>Description:</h4> {{context.description}}
+    </p>
+    <br>
+    <p>
+         <h4>You will learn:</h4>
+        <ul>
+            {%for o in context.overview%}
+            <li>
+                {{o}}
+            </li>
+            {%endfor%}
+        </ul>
+    </p>
+    <br>
+    <p>
+        <h4>Requirements:</h4>
+        <ul>
+            {%for r in context.requirements%}
+            <li>
+                {{r}}
+            </li>
+            {%endfor%}
+        </ul>
+    </p>
+    <br>
+    <p>
+        <h4>Features:</h4>
+        <ul>
+            {%for f in context.features%}
+            <li>
+                {{f}}
+            </li>
+            {%endfor%}
+        </ul>
+    </p>
+    <br>
+    <h4>Price:</h4>
+        <p>IN: ₹{{context.rupee}} <p>
+        <p>US: ${{context.dollar}}<p>
+        <p>discount: {{context.discount}}% <p>
+        <br>
+    <b><h4>Language:</b> {{context.language}}</p>
+    <br>
+    </body>
+</html>
