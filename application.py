@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect
+from flask import Flask,render_template,request,redirect,url_for
 from flask_cors import CORS,cross_origin
 import logging
 from bs4 import BeautifulSoup as bs
@@ -79,24 +79,32 @@ def course_details(section):
         return e
 
 
-@app.route('/details/pdf/<section>',methods=['GET'])
-def create_pdf(section):
-    # logger.info('inside create_pdf function')
-    # try:
-        logger.info('creating pdf')
-        section = request.view_args['section']
-        path = '/details/'
-        course_url = 'http://127.0.0.1:4000'+path+section.replace(' ','%20')
-        print('-------------------------------',course_url)
-        # logger.info('url of the course detail : ',course_url)
-        pdfkit.from_url(course_url, "{}.pdf".format(section), verbose=True)
-        logger.info('pdf created successfully')
+@app.route('/create_pdf',methods=['POST'])
+def create_pdf():
+    logger.info('inside create_pdf function')
+    try:
+        if request.method=='POST':
+            logger.info('creating pdf')
+            host = request.form['host'].strip()
+            course = request.form['course'].strip()
+            if course not in i_neuron_courses:
+                logger.warn('course is not availabe right now')
+                return '<h1 style="text-align:center;margin-top:500px">{} is not availabe, try for different course!! </h1>'.format(course)
+            
+            path = '/details/'
+            course_url = host+path+course.replace(' ','%20')
+            
+            pdfkit.from_url(course_url, "{}.pdf".format(course), verbose=True)
+            
+            logger.info('pdf created successfully')
+            return '<h1 style="text-align:center;margin-top:500px">pdf file for course "{}" has created successfully!! </h1>'.format(course)
+        else:
+            logger.error('request body is incorrect')
+            return redirect(url_for('/'))
         
-        return '<h1 style="text-align:center;margin-top:500px">pdf created successfully!! </h1>'
-    
-    # except Exception as e:
-    #     logger.error('unable to create pdf for {} : {}'.format(section,e))
-    #     return e   
+    except Exception as e:
+        logger.error('unable to create pdf for {} : {}'.format(host,e))
+        return e   
     
     
 @app.route('/db_credentials',methods=['GET'])
@@ -107,9 +115,9 @@ def db_credentials():
 def data_storing_in_mysql():
     try:
         if request.method == 'POST':
-            user = request.form['user']
-            passwd = request.form['passwd']
-            host = request.form['localhost']
+            user = request.form['user'].strip()
+            passwd = request.form['passwd'].strip()
+            host = request.form['localhost'].strip()
             
             
             db_operations = msql_db.DbOperation(user=user,passwd=passwd,host=host)
@@ -141,7 +149,7 @@ def data_storing_in_mongodb():
     try:
         if request.method=='POST':
             
-            url = request.form['url']
+            url = request.form['url'].strip()
             
             logger.info('creating mongodb connection')
             mongo = mongo_db.MongodbConnection(url)

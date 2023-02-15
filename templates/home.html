@@ -5,21 +5,34 @@
 <body>
 
     <h1>ineuron courses</h1>
+
     <div class='home_para'>
-        <h3> Store data in MySQL database <a href='/db_credentials'>click here</a> </h3>
-        <h3> Store data in Mongodb database <a href='/mongodb_operation'>click here</a> </h3>
+        <h3> Store all the data in MySQL database <a href='/db_credentials'>click here</a> </h3>
+        <h3> Store all the data in Mongodb database <a href='/mongodb_operation'>click here</a> </h3>
     </div>
 
-    <div class='course_title'>
-        <ol>
-            {%for key in i_neuron_courses%}
+    <div class='row'>
+        
+        <div class='column'>
+            <ol>
+                {%for key in i_neuron_courses%}
 
-            <li> <a href='details/{{key}}'>{{key}}</a> </li>
-            <br>
-            {%endfor%}
-        </ol>  
+                <li> <a href='details/{{key}}'>{{key}}</a> </li>
+                <br>
+                {%endfor%}
+            </ol>  
+        </div>
+
+        <div class='column'>
+            <div style='background-color:orange'><h3 > Fill the below form to create pdf </div>
+            <form action='create_pdf' method='post'>
+                    <input type='text' name='host' placeholder='enter the host from the current page url'>
+                    <input type='text' name='course' placeholder='enter the course name'>
+            
+                    <input type='submit' value='create pdf'>
+                <form>
+        </div
     </div>
-
 
 
 </body>
