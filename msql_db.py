@@ -11,11 +11,12 @@ logger.addHandler(streamHandler)
 
 
 class DbOperation():
-    def __init__(self,user,passwd,host='localhost'):
+    def __init__(self,user,passwd,host='localhost',port='3306'):
         self.user = user
         self.passwd= passwd
         self.host=host
-        self.connectr = msql.Mysqlconnecter(self.user,self.passwd,self.host)
+        self.port = port
+        self.connectr = msql.Mysqlconnecter(self.user,self.passwd,self.host,self.port)
         self.mysql = self.connectr.connector()
         self.cursor = self.mysql.cursor()
 
