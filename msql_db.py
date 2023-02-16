@@ -27,9 +27,9 @@ class DbOperation():
             databases = self.cursor.fetchall()
             dbs_collection = [i[0] for i in databases]
             if not 'ineuron_courses' in dbs_collection:
-                logger.info('database doesnot exits, so creating the database "ineuron_courses"') 
-                self.cursor.execute('create database ineuron_courses')
-            logger.debug('dataabse "ineuron_courses" created successfully')    
+                logger.info('database doesnot exits, so creating the database "ineuron-courses"') 
+                self.cursor.execute('create database ineuron-courses')
+            logger.debug('database "ineuron-courses" created successfully')    
             return databases 
         except Exception as e:
             logger.error('unable to create database : {}'.format(e))
@@ -38,19 +38,19 @@ class DbOperation():
 
     def create_table(self):
         try:
-            self.cursor.execute('use ineuron_courses')
+            self.cursor.execute('use ineuron-courses')
             self.cursor.execute('show tables')
             tables = self.cursor.fetchall()
             logger.info('showing tables inside database : {}'.format(tables))
             if len(tables)==0:
                 logger.info('no table present inside database, creating "courses" table.')
-                self.cursor.execute('''create table ineuron_courses.courses 
+                self.cursor.execute('''create table ineuron-courses.courses 
                             (name VARCHAR(255) NOT NULL,
                                 description  TEXT NOT NULL )'''
                                 )
             elif 'courses' not in tables:
                 logger.info('"courses" table doesnot exits inside database, creating "courses" table ')
-                self.cursor.execute('''create table ineuron_courses.courses 
+                self.cursor.execute('''create table ineuron-courses.courses 
                             (name VARCHAR(255) NOT NULL,
                             description  TEXT NOT NULL )'''
                             )
@@ -64,7 +64,7 @@ class DbOperation():
     def insert_data(self,name,description):
         try:
             logger.info('inserting data inside database')
-            self.cursor.execute('''insert into ineuron_courses.courses values("{}","{}")'''.format(name,description.replace('"',"'")))
+            self.cursor.execute('''insert into ineuron-courses.courses values("{}","{}")'''.format(name,description.replace('"',"'")))
             logger.debug('inserted data successfully inside "courses" table')
             return self.mysql.commit()
         except Exception as e:
@@ -72,7 +72,7 @@ class DbOperation():
     
     def drop_table(self):
         try:
-          self.cursor.execute('drop table ineuron_courses.courses') 
+          self.cursor.execute('drop table ineuron-courses.courses') 
           return self.mysql.commit()
         except Exception as e:
             logger.error('unable to drop data {}'.format(e))
