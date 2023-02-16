@@ -70,6 +70,12 @@ class DbOperation():
         except Exception as e:
             logger.error('unable to insert data inside table "courses" : {}'.format(e))
     
+    
+    def get_data(self):
+        self.cursor.execute('''select * from ineuron-courses.courses''')
+        data = self.cursor.fetchall()
+        return data
+    
     def drop_table(self):
         try:
           self.cursor.execute('drop table ineuron-courses.courses') 
