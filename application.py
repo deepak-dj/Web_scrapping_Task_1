@@ -96,7 +96,7 @@ def create_pdf():
             course = request.form['course'].strip()
             if course not in i_neuron_courses:
                 logger.warn('course is not availabe right now')
-                return '<h1 style="text-align:center;margin-top:500px">{} is not availabe, try for different course!! </h1>'.format(course)
+                return '<h1 style="text-align:center;margin-top:300px">{} is not availabe, try for different course!! </h1>'.format(course)
             
             path = '/details/'
             course_url = host+path+course.replace(' ','%20')
@@ -104,7 +104,7 @@ def create_pdf():
             pdfkit.from_url(course_url, "{}.pdf".format(course), verbose=True)
             
             logger.info('pdf created successfully')
-            return '<h1 style="text-align:center;margin-top:500px">pdf file for course "{}" has created successfully!! </h1>'.format(course)
+            return '<h1 style="text-align:center;margin-top:300px">pdf file for course "{}" has created successfully!! </h1>'.format(course)
         else:
             logger.error('request body is incorrect')
             return redirect(url_for('/'))
@@ -139,7 +139,7 @@ def data_storing_in_mysql():
                 db_operations.insert_data(i,i_neuron_courses[i]['description'])
             logger.debug('all the couses and their description stored in MySQL database')
             
-            return '<h1 style="text-align:center;margin-top:500px">all courses and their details stored in MySQL database successfully</h1>'
+            return '<h1 style="text-align:center;margin-top:300px">all courses and their details stored in MySQL database successfully</h1>'
     
         else:
             logger.error('method must be POST')  
@@ -171,7 +171,7 @@ def data_storing_in_mongodb():
                 dict = {'name':i,'description':i_neuron_courses[i]['description']}
                 mongo.insert_data(dict)
             logger.info('All the data inserted into collection successfully')    
-            return '<h1 style="text-align:center;margin-top:500px">all courses and their details stored in Mongodb database successfully</h1>'        
+            return '<h1 style="text-align:center;margin-top:300px">all courses and their details stored in Mongodb database successfully</h1>'        
     
     except Exception as e:
         logger.error('Exception while creating connection and adding data into database : {}'.format(e))
