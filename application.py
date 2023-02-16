@@ -176,6 +176,13 @@ def data_storing_in_mongodb():
     except Exception as e:
         logger.error('Exception while creating connection and adding data into database : {}'.format(e))
         return e
+    
+    
+@app.route('/get_data',methods=['GET'])
+def getsqlsdata():
+    db_operations = msql_db.DbOperation(user='root',passwd='root',host='localhost',port='3306')
+    data = db_operations.get_data()
+    return data
         
 
 
