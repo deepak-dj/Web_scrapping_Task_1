@@ -177,12 +177,6 @@ def data_storing_in_mongodb():
         logger.error('Exception while creating connection and adding data into database : {}'.format(e))
         return e
     
-    
-@app.route('/get_data',methods=['GET'])
-def getsqlsdata():
-    db_operations = msql_db.DbOperation(user='admin',passwd='adminroot',host='ineuron-courses.c7w5yyvheiwb.ap-south-1.rds.amazonaws.com',port='3306')
-    data = db_operations.get_data()
-    return data
         
 
 
