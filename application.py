@@ -65,9 +65,16 @@ def course_details(section):
         features = meta_data['features']
         language = meta_data['language']
         pricing = desc_json['pricing']
+        price_data = []
         rupee = pricing['IN']
         dollar = pricing['US']
-        discount = pricing['discount']
+        discount=''
+        for i in pricing:
+            price_data.append(i)    
+        if 'discount' in price_data:
+            discount = pricing['discount']
+        else:
+            discount = 'discount is not availabe for this course'    
     
         context = {'description':description,'createdAt':createdAt,'overview':overview,
                 'requirements':requirements,'features':features,'language':language,'section':section,
@@ -114,13 +121,15 @@ def db_credentials():
 @app.route('/store_in_mysql_db',methods=['POST','GET']) 
 def data_storing_in_mysql():
     try:
+        logger.info('storing all the data into database')
         if request.method == 'POST':
             user = request.form['user'].strip()
             passwd = request.form['passwd'].strip()
             host = request.form['localhost'].strip()
+            port = request.form['port'].strip()
             
             
-            db_operations = msql_db.DbOperation(user=user,passwd=passwd,host=host)
+            db_operations = msql_db.DbOperation(user=user,passwd=passwd,host=host,port=port)
         
             
             db_operations.create_database()
@@ -137,7 +146,7 @@ def data_storing_in_mysql():
             return redirect('db_credentials.html')  
         
     except Exception as e:
-        logger.error('unable to enter data into database : {}'.format(e))
+        logger.warn('unable to enter data into database : {}'.format(e))
         return e   
     
 @app.route('/mongodb_operation',methods=['GET'])
